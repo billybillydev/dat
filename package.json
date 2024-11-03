@@ -1,0 +1,35 @@
+{
+  "name": "@mosidev/dat",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A date manipulation utility package with the Dat class.",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "tsup": "^8.3.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "date",
+    "time",
+    "duration",
+    "Intl.DateTimeFormat",
+    "Intl.RelativeTimeFormat",
+    "bun",
+    "typescript"
+  ],
+  "author": "billybillydev",
+  "license": "MIT"
+}
