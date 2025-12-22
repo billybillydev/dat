@@ -10,22 +10,339 @@ export type DurationUnit =
   | "month"
   | "year";
 
-export class Dat {
+export class Dat extends Date {
+  constructor(...args: ConstructorParameters<typeof Date>) {
+    super(...args);
+  }
+
   /**
-   * A map that associates units with their corresponding duration calculation methods.
+   * Adds the specified number of seconds to this date.
+   * @param {number} seconds - The number of seconds to add.
+   * @returns {Dat} - A new Dat instance with the seconds added.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.addSeconds(30);
+   * console.log(result.toISOString()); // "2023-01-01T12:00:30.000Z"
    */
-  static unitCalculators = new Map<
-    DurationUnit,
-    (firstDate: Date, secondDate: Date) => number
-  >([
-    ["second", Dat.secondsBetween],
-    ["minute", Dat.minutesBetween],
-    ["hour", Dat.hoursBetween],
-    ["day", Dat.daysBetween],
-    ["week", Dat.weeksBetween],
-    ["month", Dat.monthsBetween],
-    ["year", Dat.yearsBetween],
-  ]);
+  addSeconds(seconds: number): Dat {
+    const result = new Dat(this);
+    result.setSeconds(result.getSeconds() + seconds);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of seconds from this date.
+   * @param {number} seconds - The number of seconds to subtract.
+   * @returns {Dat} - A new Dat instance with the seconds subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.substractSeconds(30);
+   * console.log(result.toISOString()); // "2023-01-01T11:59:30.000Z"
+   */
+  substractSeconds(seconds: number): Dat {
+    return this.addSeconds(-seconds);
+  }
+
+  /**
+   * Adds the specified number of minutes to this date.
+   * @param {number} minutes - The number of minutes to add.
+   * @returns {Dat} - A new Dat instance with the minutes added.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.addMinutes(15);
+   * console.log(result.toISOString()); // "2023-01-01T12:15:00.000Z"
+   */
+  addMinutes(minutes: number): Dat {
+    const result = new Dat(this);
+    result.setMinutes(result.getMinutes() + minutes);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of minutes from this date.
+   * @param {number} minutes - The number of minutes to subtract.
+   * @returns {Dat} - A new Dat instance with the minutes subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.substractMinutes(15);
+   * console.log(result.toISOString()); // "2023-01-01T11:45:00.000Z"
+   */
+  substractMinutes(minutes: number): Dat {
+    return this.addMinutes(-minutes);
+  }
+
+  /**
+   * Adds the specified number of hours to this date.
+   * @param {number} hours - The number of hours to add.
+   * @returns {Dat} - A new Dat instance with the hours added.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.addHours(2);
+   * console.log(result.toISOString()); // "2023-01-01T14:00:00.000Z"
+   */
+  addHours(hours: number): Dat {
+    const result = new Dat(this);
+    result.setHours(result.getHours() + hours);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of hours from this date.
+   * @param {number} hours - The number of hours to subtract.
+   * @returns {Dat} - A new Dat instance with the hours subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * const result = date.substractHours(2);
+   * console.log(result.toISOString()); // "2023-01-01T10:00:00.000Z"
+   */
+  substractHours(hours: number): Dat {
+    return this.addHours(-hours);
+  }
+
+  /**
+   * Adds the specified number of days to this date.
+   * @param {number} days - The number of days to add.
+   * @returns {Dat} - A new Dat instance with the days added.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.addDays(3);
+   * console.log(result.toISOString()); // "2023-01-04T00:00:00.000Z"
+   */
+  addDays(days: number): Dat {
+    const result = new Dat(this);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of days from this date.
+   * @param {number} days - The number of days to subtract.
+   * @returns {Dat} - A new Dat instance with the days subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.substractDays(3);
+   * console.log(result.toISOString()); // "2022-12-29T00:00:00.000Z"
+   */
+  substractDays(days: number): Dat {
+    return this.addDays(-days);
+  }
+
+  /**
+   * Adds the specified number of weeks to this date.
+   * @param {number} weeks - The number of weeks to add.
+   * @returns {Dat} - A new Dat instance with the weeks added.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.addWeeks(2);
+   * console.log(result.toISOString()); // "2023-01-15T00:00:00.000Z"
+   */
+  addWeeks(weeks: number): Dat {
+    const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+    return new Dat(this.getTime() + weeks * millisecondsInWeek);
+  }
+
+  /**
+   * Adds the specified number of months to this date.
+   * @param {number} months - The number of months to add.
+   * @returns {Dat} - A new Dat instance with the months added.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.addMonths(3);
+   * console.log(result.toISOString()); // "2023-04-01T00:00:00.000Z"
+   */
+  addMonths(months: number): Dat {
+    const result = new Dat(this);
+    result.setMonth(result.getMonth() + months);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of months from this date.
+   * @param {number} months - The number of months to subtract.
+   * @returns {Dat} - A new Dat instance with the months subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.substractMonths(3);
+   * console.log(result.toISOString()); // "2022-10-01T00:00:00.000Z"
+   */
+  substractMonths(months: number): Dat {
+    return this.addMonths(-months);
+  }
+
+  /**
+   * Adds the specified number of years to this date.
+   * @param {number} years - The number of years to add.
+   * @returns {Dat} - A new Dat instance with the years added.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.addYears(5);
+   * console.log(result.toISOString()); // "2028-01-01T00:00:00.000Z"
+   */
+  addYears(years: number): Dat {
+    const result = new Dat(this);
+    result.setFullYear(result.getFullYear() + years);
+    return result;
+  }
+
+  /**
+   * Subtracts the specified number of years from this date.
+   * @param {number} years - The number of years to subtract.
+   * @returns {Dat} - A new Dat instance with the years subtracted.
+   * @example
+   * const date = new Dat("2023-01-01T00:00:00.000Z");
+   * const result = date.substractYears(5);
+   * console.log(result.toISOString()); // "2018-01-01T00:00:00.000Z"
+   */
+  substractYears(years: number): Dat {
+    return this.addYears(-years);
+  }
+
+  /**
+   * Calculates the duration between this date and another date in the specified unit.
+   * @param {Date | Dat} compareTo - The date to compare to.
+   * @param {DurationUnit} unit - The unit of time to return the duration in.
+   * @returns {number} - The duration in the specified unit.
+   * @example
+   * const a = new Dat("2023-01-01T00:00:00.000Z");
+   * const b = new Dat("2023-01-01T01:00:00.000Z");
+   * console.log(a.diff(b, "hour")); // 1
+   */
+  diff(compareTo: Date | Dat, unit: DurationUnit): number {
+    return Dat.diff(this, compareTo, unit);
+  }
+
+  /**
+   * Checks if this date comes after the provided date.
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @returns {boolean} True if this date is after compareTo, false otherwise.
+   * @example
+   * const date = new Dat("2022-01-02");
+   * console.log(date.isAfter(new Dat("2022-01-01"))); // true
+   */
+  isAfter(compareTo: Date | Dat): boolean {
+    return Dat.isAfter(this, compareTo);
+  }
+
+  /**
+   * Checks if this date comes before the provided date.
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @returns {boolean} True if this date is before compareTo, false otherwise.
+   * @example
+   * const date = new Dat("2022-01-01");
+   * console.log(date.isBefore(new Dat("2022-01-02"))); // true
+   */
+  isBefore(compareTo: Date | Dat): boolean {
+    return Dat.isBefore(this, compareTo);
+  }
+
+  /**
+   * Checks if this date is the same as the provided date (same timestamp).
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @returns {boolean} True if both dates are the same, false otherwise.
+   * @example
+   * const date = new Dat("2022-01-01");
+   * console.log(date.isSame(new Dat("2022-01-01"))); // true
+   */
+  isSame(compareTo: Date | Dat): boolean {
+    return Dat.isSame(this, compareTo);
+  }
+
+  /**
+   * Checks if this date has the same unit value as the provided date.
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @param {DurationUnit} unit - The unit to compare.
+   * @returns {boolean} True if both dates share the same unit value.
+   * @example
+   * const date = new Dat("2022-01-01");
+   * console.log(date.hasSame(new Dat("2022-01-02"), "month")); // true
+   */
+  hasSame(compareTo: Date | Dat, unit: DurationUnit): boolean {
+    return Dat.hasSame(this, compareTo, unit);
+  }
+
+  /**
+   * Checks if this date's unit value comes before the provided date's unit value.
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @param {DurationUnit} unit - The unit to compare.
+   * @returns {boolean} True if this date is before compareTo for the specified unit.
+   * @example
+   * const date = new Dat("2022-01-01");
+   * console.log(date.hasBefore(new Dat("2022-01-02"), "day")); // true
+   */
+  hasBefore(compareTo: Date | Dat, unit: DurationUnit): boolean {
+    return Dat.hasBefore(this, compareTo, unit);
+  }
+
+  /**
+   * Checks if this date's unit value comes after the provided date's unit value.
+   * @param {Date | Dat} compareTo - The date to compare against.
+   * @param {DurationUnit} unit - The unit to compare.
+   * @returns {boolean} True if this date is after compareTo for the specified unit.
+   * @example
+   * const date = new Dat("2022-01-02");
+   * console.log(date.hasAfter(new Dat("2022-01-01"), "day")); // true
+   */
+  hasAfter(compareTo: Date | Dat, unit: DurationUnit): boolean {
+    return Dat.hasAfter(this, compareTo, unit);
+  }
+
+  /**
+   * Calculates the duration from now to this date in the specified unit.
+   * @param {DurationUnit} unit - The unit of time to return the duration in.
+   * @returns {number} - The duration in the specified unit.
+   * @example
+   * const date = new Dat();
+   * console.log(date.addMonths(3).fromNow("month"));
+   */
+  fromNow(unit: DurationUnit): number {
+    return Dat.durationFromNow(this, unit);
+  }
+
+  /**
+   * Calculates the duration from this date to now in the specified unit.
+   * @param {DurationUnit} unit - The unit of time to return the duration in.
+   * @returns {number} - The duration in the specified unit.
+   * @example
+   * const date = new Dat();
+   * console.log(date.substractMonths(3).untilNow("month"));
+   */
+  untilNow(unit: DurationUnit): number {
+    return Dat.durationToNow(this, unit);
+  }
+
+  /**
+   * Formats this date using Intl.DateTimeFormat with the specified locale and options.
+   * @param {Intl.DateTimeFormatOptions & { locale?: Locale }} [options] - Optional Intl.DateTimeFormat options and locale.
+   * @returns {string} - The formatted date string.
+   * @example
+   * const date = new Dat("2023-01-01T12:00:00.000Z");
+   * console.log(date.formatDate({ dateStyle: "medium", timeStyle: "medium" }));
+   */
+  formatDate(
+    options: Intl.DateTimeFormatOptions & { locale?: Locale } = {
+      locale: "en-US",
+    }
+  ): string {
+    return Dat.formatDate(this, options);
+  }
+
+  /**
+   * Formats this date as a relative duration using Intl.RelativeTimeFormat.
+   * @param {DurationUnit} unit - The unit of time for the duration.
+   * @param {Intl.RelativeTimeFormatOptions & { locale?: Locale }} [options] - Options for Intl.RelativeTimeFormat and locale.
+   * @returns {string} - The formatted duration string.
+   * @example
+   * const date = new Dat();
+   * console.log(date.formatDuration("day"));
+   */
+  formatDuration(
+    unit: DurationUnit,
+    options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
+      locale: "en-US",
+    }
+  ): string {
+    return Dat.formatDuration(this.getTime(), unit, options);
+  }
 
   /**
    * Calculates the duration from now to a future date in the specified unit.
@@ -35,7 +352,7 @@ export class Dat {
    */
   static durationFromNow(futureDate: Date, unit: DurationUnit): number {
     const now = new Date();
-    return this.calculateDuration(now, futureDate, unit);
+    return this.diff(now, futureDate, unit);
   }
 
   /**
@@ -46,7 +363,7 @@ export class Dat {
    */
   static durationToNow(pastDate: Date, unit: DurationUnit): number {
     const now = new Date();
-    return this.calculateDuration(pastDate, now, unit);
+    return this.diff(pastDate, now, unit);
   }
 
   /**
@@ -61,7 +378,9 @@ export class Dat {
 
   static formatDate(
     date: Date,
-    options: Intl.DateTimeFormatOptions & { locale?: Locale } = { locale: "en-US" }
+    options: Intl.DateTimeFormatOptions & { locale?: Locale } = {
+      locale: "en-US",
+    }
   ): string {
     const { locale, ...restOptions } = options;
 
@@ -81,7 +400,9 @@ export class Dat {
   static formatDuration(
     value: number,
     unit: DurationUnit,
-    options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = { locale: "en-US" }
+    options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
+      locale: "en-US",
+    }
   ): string {
     const { locale, ...restOptions } = options;
     const rtf = new Intl.RelativeTimeFormat(locale, restOptions);
@@ -99,18 +420,47 @@ export class Dat {
    * @param {DurationUnit} unit - The unit of time to return the duration in.
    * @returns {number} - The duration in the specified unit.
    * @example
-   * const daysBetween = Dat.calculateDuration(new Date('2023-01-01'), new Date('2023-01-03'), 'day'); // Returns 2
+   * const daysBetween = Dat.diff(new Date('2023-01-01'), new Date('2023-01-03'), 'day'); // Returns 2
    */
-  static calculateDuration(
-    firstDate: Date,
-    secondDate: Date,
-    unit: DurationUnit
+  static diff(
+    firstDate: Date | Dat,
+    secondDate: Date | Dat,
+    unit: DurationUnit,
   ): number {
-    const calculator = this.unitCalculators.get(unit);
-    if (!calculator) {
-      throw new Error(`Unknown unit: ${unit}`);
+    let result: number;
+    switch (unit) {
+      case "second":
+        result = (secondDate.getTime() - firstDate.getTime()) / 1000;
+        break;
+      case "minute":
+        result = (secondDate.getTime() - firstDate.getTime()) / (60 * 1000);
+        break;
+      case "hour":
+        result =
+          (secondDate.getTime() - firstDate.getTime()) / (60 * 60 * 1000);
+        break;
+      case "day":
+        result =
+          (secondDate.getTime() - firstDate.getTime()) / (24 * 60 * 60 * 1000);
+        break;
+      case "week":
+        result =
+          (secondDate.getTime() - firstDate.getTime()) /
+          (7 * 24 * 60 * 60 * 1000);
+        break;
+      case "month":
+        result =
+          (secondDate.getFullYear() - firstDate.getFullYear()) * 12 +
+          (secondDate.getMonth() - firstDate.getMonth());
+        break;
+      case "year":
+        result = secondDate.getFullYear() - firstDate.getFullYear();
+        break;
+      default:
+        throw new Error(`Unknown unit: ${unit}`);
     }
-    const formattedResult = calculator(firstDate, secondDate).toFixed(2);
+
+    const formattedResult = result.toFixed(2);
     return Number(formattedResult);
   }
 
@@ -421,93 +771,93 @@ export class Dat {
   }
 
   /**
-   * Subtracts the specified number of seconds from the given date.
-   * @param {Date} date - The date to subtract seconds from.
-   * @param {number} seconds - The number of seconds to subtract.
+   * Substracts the specified number of seconds from the given date.
+   * @param {Date} date - The date to substract seconds from.
+   * @param {number} seconds - The number of seconds to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractSeconds(new Date('2023-01-01T12:00:00.000Z'), 30);
+   * const result = Dat.substractSeconds(new Date('2023-01-01T12:00:00.000Z'), 30);
    * console.log(result); // e.g., "2023-01-01T11:59:30.000Z"
    */
-  static subtractSeconds(date: Date, seconds: number): Date {
+  static substractSeconds(date: Date, seconds: number): Date {
     return Dat.addSeconds(date, -seconds);
   }
 
   /**
-   * Subtracts the specified number of minutes from the given date.
-   * @param {Date} date - The date to subtract minutes from.
-   * @param {number} minutes - The number of minutes to subtract.
+   * Substracts the specified number of minutes from the given date.
+   * @param {Date} date - The date to substract minutes from.
+   * @param {number} minutes - The number of minutes to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractMinutes(new Date('2023-01-01T12:00:00.000Z'), 15);
+   * const result = Dat.substractMinutes(new Date('2023-01-01T12:00:00.000Z'), 15);
    * console.log(result); // e.g., "2023-01-01T11:45:00.000Z"
    */
-  static subtractMinutes(date: Date, minutes: number): Date {
+  static substractMinutes(date: Date, minutes: number): Date {
     return Dat.addMinutes(date, -minutes);
   }
 
   /**
-   * Subtracts the specified number of hours from the given date.
-   * @param {Date} date - The date to subtract hours from.
-   * @param {number} hours - The number of hours to subtract.
+   * Substracts the specified number of hours from the given date.
+   * @param {Date} date - The date to substract hours from.
+   * @param {number} hours - The number of hours to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractHours(new Date('2023-01-01T12:00:00.000Z'), 2);
+   * const result = Dat.substractHours(new Date('2023-01-01T12:00:00.000Z'), 2);
    * console.log(result); // e.g., "2023-01-01T10:00:00.000Z"
    */
-  static subtractHours(date: Date, hours: number): Date {
+  static substractHours(date: Date, hours: number): Date {
     return Dat.addHours(date, -hours);
   }
 
   /**
-   * Subtracts the specified number of days from the given date.
-   * @param {Date} date - The date to subtract days from.
-   * @param {number} days - The number of days to subtract.
+   * Substracts the specified number of days from the given date.
+   * @param {Date} date - The date to substract days from.
+   * @param {number} days - The number of days to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractDays(new Date('2023-01-01T00:00:00.000Z'), 3);
+   * const result = Dat.substractDays(new Date('2023-01-01T00:00:00.000Z'), 3);
    * console.log(result); // e.g., "2022-12-29T00:00:00.000Z"
    */
-  static subtractDays(date: Date, days: number): Date {
+  static substractDays(date: Date, days: number): Date {
     return Dat.addDays(date, -days);
   }
 
   /**
-   * Subtracts the specified number of weeks from the given date.
-   * @param {Date} date - The date to subtract weeks from.
-   * @param {number} weeks - The number of weeks to subtract.
+   * Substracts the specified number of weeks from the given date.
+   * @param {Date} date - The date to substract weeks from.
+   * @param {number} weeks - The number of weeks to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractWeeks(new Date('2023-01-01T00:00:00.000Z'), 2);
+   * const result = Dat.substractWeeks(new Date('2023-01-01T00:00:00.000Z'), 2);
    * console.log(result); // e.g., "2022-12-18T00:00:00.000Z"
    */
-  static subtractWeeks(date: Date, weeks: number): Date {
+  static substractWeeks(date: Date, weeks: number): Date {
     return Dat.addWeeks(date, -weeks);
   }
 
   /**
-   * Subtracts the specified number of months from the given date.
-   * @param {Date} date - The date to subtract months from.
-   * @param {number} months - The number of months to subtract.
+   * Substracts the specified number of months from the given date.
+   * @param {Date} date - The date to substract months from.
+   * @param {number} months - The number of months to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractMonths(new Date('2023-01-01T00:00:00.000Z'), 3);
+   * const result = Dat.substractMonths(new Date('2023-01-01T00:00:00.000Z'), 3);
    * console.log(result); // e.g., "2022-10-01T00:00:00.000Z"
    */
-  static subtractMonths(date: Date, months: number): Date {
+  static substractMonths(date: Date, months: number): Date {
     return Dat.addMonths(date, -months);
   }
 
   /**
-   * Subtracts the specified number of years from the given date.
-   * @param {Date} date - The date to subtract years from.
-   * @param {number} years - The number of years to subtract.
+   * Substracts the specified number of years from the given date.
+   * @param {Date} date - The date to substract years from.
+   * @param {number} years - The number of years to substract.
    * @returns {Date} - The resulting date object.
    * @example
-   * const result = Dat.subtractYears(new Date('2023-01-01T00:00:00.000Z'), 5);
+   * const result = Dat.substractYears(new Date('2023-01-01T00:00:00.000Z'), 5);
    * console.log(result); // e.g., "2018-01-01T00:00:00.000Z"
    */
-  static subtractYears(date: Date, years: number): Date {
+  static substractYears(date: Date, years: number): Date {
     return Dat.addYears(date, -years);
   }
 
@@ -523,8 +873,7 @@ export class Dat {
    * console.log(seconds); // 100
    */
   static secondsBetween(firstDate: Date, secondDate: Date): number {
-    const msPerSecond = 1000;
-    return Math.abs((secondDate.getTime() - firstDate.getTime()) / msPerSecond);
+    return Math.abs(Dat.diff(firstDate, secondDate, "second"));
   }
 
   /**
@@ -537,8 +886,7 @@ export class Dat {
    * console.log(minutes); // 1.67
    */
   static minutesBetween(firstDate: Date, secondDate: Date): number {
-    const msPerMinute = 60 * 1000;
-    return Math.abs((secondDate.getTime() - firstDate.getTime()) / msPerMinute);
+    return Math.abs(Dat.diff(firstDate, secondDate, "minute"));
   }
 
   /**
@@ -551,8 +899,7 @@ export class Dat {
    * console.log(hours); // 1.67
    */
   static hoursBetween(firstDate: Date, secondDate: Date): number {
-    const msPerHour = 60 * 60 * 1000;
-    return Math.abs((secondDate.getTime() - firstDate.getTime()) / msPerHour);
+    return Math.abs(Dat.diff(firstDate, secondDate, "hour"));
   }
 
   /**
@@ -565,8 +912,7 @@ export class Dat {
    * console.log(days); // 2
    */
   static daysBetween(firstDate: Date, secondDate: Date): number {
-    const msPerDay = 24 * 60 * 60 * 1000;
-    return Math.abs((secondDate.getTime() - firstDate.getTime()) / msPerDay);
+    return Math.abs(Dat.diff(firstDate, secondDate, "day"));
   }
 
   /**
@@ -579,9 +925,7 @@ export class Dat {
    * console.log(weeks); // 2
    */
   static weeksBetween(firstDate: Date, secondDate: Date): number {
-    const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
-    const diffInMilliseconds = secondDate.getTime() - firstDate.getTime();
-    return Math.abs(Math.round(diffInMilliseconds / millisecondsInWeek));
+    return Math.abs(Dat.diff(firstDate, secondDate, "week"));
   }
 
   /**
@@ -594,10 +938,7 @@ export class Dat {
    * console.log(months); // 2
    */
   static monthsBetween(firstDate: Date, secondDate: Date): number {
-    return Math.abs(
-      (secondDate.getFullYear() - firstDate.getFullYear()) * 12 +
-        (secondDate.getMonth() - firstDate.getMonth())
-    );
+    return Math.abs(Dat.diff(firstDate, secondDate, "month"));
   }
 
   /**
@@ -610,6 +951,6 @@ export class Dat {
    * console.log(years); // 3
    */
   static yearsBetween(firstDate: Date, secondDate: Date): number {
-    return Math.abs(secondDate.getFullYear() - firstDate.getFullYear());
+    return Math.abs(Dat.diff(firstDate, secondDate, "year"));
   }
 }

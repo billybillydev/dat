@@ -1,6 +1,9 @@
-# Dat
+# Dat v2
 
 The `Dat` class provides a collection of helpful methods for date manipulation, formatting, and comparison. You can calculate the duration between dates, format dates and times, add or subtract time units, and perform various date comparisons. This package aims to use no dependencies to work with.
+
+In V2, we've added instance methods to the Dat class to provide a more object-oriented approach to date manipulation.
+This way, you can use the Dat class as an object and chain methods.
 
 ## Goal
 
@@ -12,7 +15,7 @@ So, Dat is just a set of common features/operations developpers would like to ha
 
 The mostly great feature with Dat is the combination between javascript Date and Intl.DateTimeFormat / Intl.RelativeTimeFormat which provide so much handful way of formatting date/time in a proper way - by even dealing with locale.
 
-Therefore, Dat has no dependencies...and we wznted to let you know that :)
+Therefore, Dat has no dependencies...and we wanted to let you know that :)
 
 We'll see with time what developpers think that could be included in this package without the needs to be bound to another dependencies. Enjoy !
 
@@ -56,7 +59,53 @@ Simply:
 import { Dat } from '@mosi/dat';
 ```
 
-### Examples
+### Examples V2
+
+```typescript
+const date = new Dat();
+const formattedDate = date.formatDate({ dateStyle: 'long', locale: 'fr-FR' });
+console.log(formattedDate); // e.g., "30 Octobre, 2023"
+```
+
+```typescript
+const date = new Dat();
+const formattedDate = date.formatDuration(3, 'month');
+console.log(formattedDate); // e.g., "in 3 months"
+```
+
+```typescript
+const date = new Dat();
+const formattedDate = date.addDays(3);
+console.log(formattedDate); // e.g., "2023-10-30T12:00:00.000Z"
+```
+
+```typescript
+const date = new Dat();
+const formattedDate = date.isBefore(new Dat('2023-01-01'));
+console.log(formattedDate); // e.g., "2023-10-30T12:00:00.000Z"
+```
+
+```typescript
+const date = new Dat();
+const formattedDate = date.fromNow('month');
+console.log(formattedDate); // e.g., "in 3 months"
+```
+
+```typescript
+const date = new Dat();
+const formattedDate = date.untilNow('month', { locale: 'fr-FR' });
+console.log(formattedDate); // e.g., "il y a 3 mois"
+```
+
+With V2, you can chain methods to perform multiple operations on a date.
+
+```typescript
+const date = new Dat();
+const formattedDate = date.addDays(3).substractHours(2).formatDate({ dateStyle: 'long', locale: 'fr-FR' });
+console.log(formattedDate); // e.g., "30 Octobre, 2023"
+```
+
+### Examples V1 (Legacy)
 
 #### 1. Formatting Dates
 
@@ -69,12 +118,12 @@ console.log(formattedDate); // e.g., "30 Octobre, 2023"
 
 #### 2. Calculating Duration Between Dates
 
-Use `calculateDuration` to get the duration between two dates in different units.
+Use `diff` (calculateDuration in v1) to get the duration between two dates in different units.
 
 ```typescript
 const startDate = new Date('2023-01-01');
 const endDate = new Date('2023-01-03');
-const daysBetween = Dat.calculateDuration(startDate, endDate, 'day'); // Returns 2
+const daysBetween = Dat.diff(startDate, endDate, 'day'); // Returns 2
 console.log(`Days between: ${daysBetween}`);
 ```
 
@@ -177,7 +226,7 @@ Formats a date based on the specified options and locale.
 
 Formats a duration based on the specified options and locale.
 
-### `Dat.calculateDuration(firstDate: Date, secondDate: Date, unit: DurationUnit): number`
+### `Dat.diff(firstDate: Date, secondDate: Date, unit: DurationUnit): number`
 
 Calculates the duration between two dates in the specified unit.
 
