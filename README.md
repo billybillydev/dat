@@ -36,17 +36,17 @@ _Dat is the translation of Date in **haitian kreyol**._
 Simply:
 - npm:
     ```bash
-    npm install @mosi/dat
+    npm install @mosidev/dat
 - yarn
     ```bash
-    yarn add @mosi/dat
+    yarn add @mosidev/dat
 - pnpm:
     ```bash
-    pnpm install @mosi/dat
+    pnpm install @mosidev/dat
 
 - bun
     ```bash
-    bun add @mosi/dat
+    bun add @mosidev/dat
 
 
 ---
@@ -56,7 +56,7 @@ Simply:
 ### Importing the Class
 
 ```typescript
-import { Dat } from '@mosi/dat';
+import { Dat } from '@mosidev/dat';
 ```
 
 ### Examples V2
