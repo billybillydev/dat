@@ -1,7 +1,7 @@
 {
   "name": "@mosidev/dat",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "A date manipulation utility package with the Dat class. zero dependency",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -9,6 +9,16 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./locales": {
+      "import": "./dist/locales.js",
+      "require": "./dist/locales.cjs"
+    }
+  },
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
