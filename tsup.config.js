@@ -1,5 +1,5 @@
 export default {
-  entry: ["src/index.ts"],
+  entry: ["src/index.ts", "src/locales.ts"],
   format: ["cjs", "esm"],
   dts: true, // Set to true if using TypeScript for type definitions
   outDir: "dist",
