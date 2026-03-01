@@ -1,7 +1,67 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { Dat } from "../src";
 
 describe("Dat", () => {
+  describe("Dat instanciation", () => {
+    it("define a define which is instanceof Dat", () => {
+      const date = new Dat();
+      expect(date).toBeInstanceOf(Dat);
+    });
+
+    it("define a date of now when no arguments are provided", () => {
+      const date = new Dat();
+      const today = new Date();
+
+      expect(date.valueOf()).toEqual(today.valueOf());
+      expect(date.getFullYear()).toEqual(today.getFullYear());
+      expect(date.getMonth()).toEqual(today.getMonth());
+      expect(date.getDate()).toEqual(today.getDate());
+      expect(date.getHours()).toEqual(today.getHours());
+      expect(date.getMinutes()).toEqual(today.getMinutes());
+      expect(date.getSeconds()).toEqual(today.getSeconds());
+      expect(date.getMilliseconds()).toEqual(today.getMilliseconds());
+    });
+
+    it("define a date when there is only one argument and it is an object of type DatParametersObject", () => {
+      const date = new Dat({ year: 2023, month: 1, day: 1 });
+
+      expect(date.getFullYear()).toEqual(2023);
+      expect(date.getMonth()).toEqual(1);
+      expect(date.getDate()).toEqual(1);
+    });
+
+    it("define a date when there is only one argument and it is a string", () => {
+      const date = new Dat("2023-01-01T12:00:00.000Z");
+
+      expect(date.getFullYear()).toEqual(2023);
+      expect(date.getMonth()).toEqual(0);
+      expect(date.getDate()).toEqual(1);
+      expect(date.getHours()).toEqual(12);
+    });
+
+    it("define a date when there is only one argument and it is a number", () => {
+      const date = new Dat(1672531200000);
+
+      expect(date.valueOf()).toEqual(1672531200000);
+    });
+
+    it("define a date when there is only one argument and it is a Date", () => {
+      const date = new Dat(new Date("2023-01-01T12:00:00.000Z"));
+      expect(date.valueOf()).toEqual(
+        new Date("2023-01-01T12:00:00.000Z").valueOf(),
+      );
+    });
+
+    it("define a date when args arity is greater than 1", () => {
+      const date = new Dat(2023, 1, 1, 12);
+
+      expect(date.getFullYear()).toEqual(2023);
+      expect(date.getMonth()).toEqual(1);
+      expect(date.getDate()).toEqual(1);
+      expect(date.getHours()).toEqual(12);
+    });
+  });
+
   describe("addSeconds", () => {
     it("adds seconds to a date", () => {
       const date = new Date("2023-01-01T12:00:00.000Z");
@@ -287,39 +347,39 @@ describe("Dat", () => {
     it("addSeconds/addMinutes/addHours return correct values", () => {
       const base = new Dat("2023-01-01T12:00:00.000Z");
       expect(base.addSeconds(30).toISOString()).toEqual(
-        "2023-01-01T12:00:30.000Z"
+        "2023-01-01T12:00:30.000Z",
       );
       expect(base.addMinutes(15).toISOString()).toEqual(
-        "2023-01-01T12:15:00.000Z"
+        "2023-01-01T12:15:00.000Z",
       );
       expect(base.addHours(2).toISOString()).toEqual(
-        "2023-01-01T14:00:00.000Z"
+        "2023-01-01T14:00:00.000Z",
       );
     });
 
     it("addWeeks/addMonths/addYears return correct values", () => {
       const base = new Dat("2023-01-01T00:00:00.000Z");
       expect(base.addWeeks(2).toISOString()).toEqual(
-        "2023-01-15T00:00:00.000Z"
+        "2023-01-15T00:00:00.000Z",
       );
       expect(base.addMonths(3).toISOString()).toEqual(
-        "2023-04-01T00:00:00.000Z"
+        "2023-04-01T00:00:00.000Z",
       );
       expect(base.addYears(5).toISOString()).toEqual(
-        "2028-01-01T00:00:00.000Z"
+        "2028-01-01T00:00:00.000Z",
       );
     });
 
     it("substractDays/substractMonths/substractYears return correct values", () => {
       const base = new Dat("2023-01-01T00:00:00.000Z");
       expect(base.substractDays(3).toISOString()).toEqual(
-        "2022-12-29T00:00:00.000Z"
+        "2022-12-29T00:00:00.000Z",
       );
       expect(base.substractMonths(3).toISOString()).toEqual(
-        "2022-10-01T00:00:00.000Z"
+        "2022-10-01T00:00:00.000Z",
       );
       expect(base.substractYears(5).toISOString()).toEqual(
-        "2018-01-01T00:00:00.000Z"
+        "2018-01-01T00:00:00.000Z",
       );
     });
 
@@ -331,7 +391,9 @@ describe("Dat", () => {
 
     it("fromNow/untilNow match their static counterparts", () => {
       const future = new Dat("2025-01-01T12:00:00.000Z");
-      expect(future.fromNow("month")).toEqual(Dat.durationFromNow(future, "month"));
+      expect(future.fromNow("month")).toEqual(
+        Dat.durationFromNow(future, "month"),
+      );
 
       const past = new Dat("2024-05-01T12:00:00.000Z");
       expect(past.untilNow("day")).toEqual(Dat.durationToNow(past, "day"));
@@ -346,7 +408,7 @@ describe("Dat", () => {
     it("formatDuration instance matches Dat.formatDuration", () => {
       const date = new Dat("2023-01-01T12:00:00.000Z");
       expect(date.formatDuration("month")).toEqual(
-        Dat.formatDuration(date.getTime(), "month")
+        Dat.formatDuration(date.getTime(), "month"),
       );
     });
 
@@ -357,11 +419,15 @@ describe("Dat", () => {
       expect(date1.isBefore(date2)).toBe(Dat.isBefore(date1, date2));
       expect(date1.isSame(date2)).toBe(Dat.isSame(date1, date2));
 
-      expect(date1.hasAfter(date2, "day")).toBe(Dat.hasAfter(date1, date2, "day"));
-      expect(date1.hasBefore(date2, "day")).toBe(
-        Dat.hasBefore(date1, date2, "day")
+      expect(date1.hasAfter(date2, "day")).toBe(
+        Dat.hasAfter(date1, date2, "day"),
       );
-      expect(date1.hasSame(date2, "month")).toBe(Dat.hasSame(date1, date2, "month"));
+      expect(date1.hasBefore(date2, "day")).toBe(
+        Dat.hasBefore(date1, date2, "day"),
+      );
+      expect(date1.hasSame(date2, "month")).toBe(
+        Dat.hasSame(date1, date2, "month"),
+      );
     });
   });
 });

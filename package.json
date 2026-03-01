@@ -1,7 +1,7 @@
 {
   "name": "@mosidev/dat",
   "type": "module",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A date manipulation utility package with the Dat class. zero dependency",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

@@ -1,4 +1,3 @@
-// src/Dat.ts
 import { type Locale } from "./locales";
 
 export type DurationUnit =
@@ -10,9 +9,69 @@ export type DurationUnit =
   | "month"
   | "year";
 
+export type DatParametersObject = {
+  year?: number;
+  month?: number;
+  day?: number;
+  hour?: number;
+  minute?: number;
+  second?: number;
+  milliseconds?: number;
+};
+
+function isDatParametersObject(param: unknown): param is DatParametersObject {
+  return (
+    typeof param === "object" && param !== null && !(param instanceof Date)
+  );
+}
+
+type DateConstructorArgs =
+  | []
+  | [value: string | number | Date]
+  | [
+      year: number,
+      month: number,
+      day?: number,
+      hour?: number,
+      minute?: number,
+      second?: number,
+      milliseconds?: number,
+    ];
+
 export class Dat extends Date {
-  constructor(...args: ConstructorParameters<typeof Date>) {
-    super(...args);
+  constructor();
+  constructor(value: string | number | Date);
+  constructor(
+    year: number,
+    month: number,
+    day?: number,
+    hour?: number,
+    minute?: number,
+    second?: number,
+    milliseconds?: number,
+  );
+  constructor(params: DatParametersObject);
+  constructor(...args: [...DateConstructorArgs] | [DatParametersObject]) {
+    if (args.length === 0) {
+      super();
+    } else if (args.length === 1) {
+      if (isDatParametersObject(args[0])) {
+        const {
+          year = 0,
+          month = 0,
+          day = 0,
+          hour = 0,
+          minute = 0,
+          second = 0,
+          milliseconds = 0,
+        } = args[0];
+        super(year, month, day, hour, minute, second, milliseconds);
+      } else {
+        super(args[0]);
+      }
+    } else {
+      super(...args);
+    }
   }
 
   /**
@@ -321,7 +380,7 @@ export class Dat extends Date {
   formatDate(
     options: Intl.DateTimeFormatOptions & { locale?: Locale } = {
       locale: "en-US",
-    }
+    },
   ): string {
     return Dat.formatDate(this, options);
   }
@@ -339,7 +398,7 @@ export class Dat extends Date {
     unit: DurationUnit,
     options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
       locale: "en-US",
-    }
+    },
   ): string {
     return Dat.formatDuration(this.getTime(), unit, options);
   }
@@ -380,7 +439,7 @@ export class Dat extends Date {
     date: Date,
     options: Intl.DateTimeFormatOptions & { locale?: Locale } = {
       locale: "en-US",
-    }
+    },
   ): string {
     const { locale, ...restOptions } = options;
 
@@ -402,7 +461,7 @@ export class Dat extends Date {
     unit: DurationUnit,
     options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
       locale: "en-US",
-    }
+    },
   ): string {
     const { locale, ...restOptions } = options;
     const rtf = new Intl.RelativeTimeFormat(locale, restOptions);
@@ -529,7 +588,7 @@ export class Dat extends Date {
   static hasSame(
     firstDate: Date,
     secondDate: Date,
-    unit: DurationUnit
+    unit: DurationUnit,
   ): boolean {
     switch (unit) {
       case "year":
@@ -578,7 +637,7 @@ export class Dat extends Date {
   static hasBefore(
     firstDate: Date,
     secondDate: Date,
-    unit: DurationUnit
+    unit: DurationUnit,
   ): boolean {
     switch (unit) {
       case "year":
@@ -627,7 +686,7 @@ export class Dat extends Date {
   static hasAfter(
     firstDate: Date,
     secondDate: Date,
-    unit: DurationUnit
+    unit: DurationUnit,
   ): boolean {
     switch (unit) {
       case "year":
