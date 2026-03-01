@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { Dat } from "../src";
+import { Dat, DurationUnit } from "../src";
 
 describe("Dat", () => {
   describe("Dat instanciation", () => {
@@ -402,13 +402,18 @@ describe("Dat", () => {
     it("formatDate instance matches Dat.formatDate", () => {
       const date = new Dat("2023-01-01T12:00:00.000Z");
       const options = { dateStyle: "medium", timeStyle: "medium" } as const;
+
       expect(date.formatDate(options)).toEqual(Dat.formatDate(date, options));
     });
 
     it("formatDuration instance matches Dat.formatDuration", () => {
       const date = new Dat("2023-01-01T12:00:00.000Z");
-      expect(date.formatDuration("month")).toEqual(
-        Dat.formatDuration(date.getTime(), "month"),
+      const value = -3;
+      const unit: DurationUnit = "month";
+      const options = { locale: "en-US" } as const;
+
+      expect(date.formatDuration(value, unit, options)).toEqual(
+        Dat.formatDuration(value, unit, options),
       );
     });
 

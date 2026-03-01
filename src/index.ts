@@ -395,12 +395,13 @@ export class Dat extends Date {
    * console.log(date.formatDuration("day"));
    */
   formatDuration(
+    value: number,
     unit: DurationUnit,
     options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
       locale: "en-US",
     },
   ): string {
-    return Dat.formatDuration(this.getTime(), unit, options);
+    return Dat.formatDuration(value, unit, options);
   }
 
   /**
