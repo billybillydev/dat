@@ -335,6 +335,18 @@ describe("Dat", () => {
     });
   });
 
+  describe("isLeapYear", () => {
+    it("returns true if the year is a leap year", () => {
+      const date = new Date("2024-01-01T00:00:00.000Z");
+      expect(Dat.isLeapYear(date)).toBe(true);
+    });
+
+    it("returns false if the year is not a leap year", () => {
+      const date = new Date("2023-01-01T00:00:00.000Z");
+      expect(Dat.isLeapYear(date)).toBe(false);
+    });
+  });
+
   describe("v2 instance methods", () => {
     it("addDays returns a Dat instance and does not mutate original", () => {
       const original = new Dat("2023-01-01T00:00:00.000Z");
@@ -433,6 +445,11 @@ describe("Dat", () => {
       expect(date1.hasSame(date2, "month")).toBe(
         Dat.hasSame(date1, date2, "month"),
       );
+    });
+
+    it("isLeapYear instance matches Dat.isLeapYear", () => {
+      const date = new Dat("2025-01-01T00:00:00.000Z");
+      expect(date.isLeapYear()).toBe(Dat.isLeapYear(date));
     });
   });
 });

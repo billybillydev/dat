@@ -306,6 +306,10 @@ export class Dat extends Date {
     return Dat.isSame(this, compareTo);
   }
 
+  isLeapYear(): boolean {
+    return Dat.isLeapYear(this);
+  }
+
   /**
    * Checks if this date has the same unit value as the provided date.
    * @param {Date | Dat} compareTo - The date to compare against.
@@ -570,6 +574,11 @@ export class Dat extends Date {
    */
   static isSame(firstDate: Date, secondDate: Date): boolean {
     return firstDate.getTime() === secondDate.getTime();
+  }
+
+  static isLeapYear(date: Date): boolean {
+    const year = date.getFullYear();
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
   /**
