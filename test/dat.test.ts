@@ -347,6 +347,30 @@ describe("Dat", () => {
     });
   });
 
+  describe("isWorkingDay", () => {
+    it("returns true if the date is a working day (Monday to Friday)", () => {
+      const weekday = new Date("2024-01-15T00:00:00.000Z"); // Monday
+      expect(Dat.isWorkingDay(weekday)).toBe(true);
+    });
+
+    it("returns false if the date is a weekend (Saturday or Sunday)", () => {
+      const weekend = new Date("2024-01-13T00:00:00.000Z"); // Saturday
+      expect(Dat.isWorkingDay(weekend)).toBe(false);
+    });
+  });
+
+  describe("isWeekend", () => {
+    it("returns true if the date is a weekend (Saturday or Sunday)", () => {
+      const weekend = new Date("2024-01-13T00:00:00.000Z"); // Saturday
+      expect(Dat.isWeekend(weekend)).toBe(true);
+    });
+
+    it("returns false if the date is a working day (Monday to Friday)", () => {
+      const weekday = new Date("2024-01-15T00:00:00.000Z"); // Monday
+      expect(Dat.isWeekend(weekday)).toBe(false);
+    });
+  });
+
   describe("v2 instance methods", () => {
     it("addDays returns a Dat instance and does not mutate original", () => {
       const original = new Dat("2023-01-01T00:00:00.000Z");
@@ -450,6 +474,16 @@ describe("Dat", () => {
     it("isLeapYear instance matches Dat.isLeapYear", () => {
       const date = new Dat("2025-01-01T00:00:00.000Z");
       expect(date.isLeapYear()).toBe(Dat.isLeapYear(date));
+    });
+    
+    it("isWorkingDay instance matches Dat.isWorkingDay", () => {
+      const weekday = new Dat("2024-01-15T00:00:00.000Z"); // Monday
+      expect(weekday.isWorkingDay()).toBe(Dat.isWorkingDay(weekday));
+    });
+    
+    it("isWeekend instance matches Dat.isWeekend", () => {
+      const weekend = new Dat("2024-01-13T00:00:00.000Z"); // Saturday
+      expect(weekend.isWeekend()).toBe(Dat.isWeekend(weekend));
     });
   });
 });

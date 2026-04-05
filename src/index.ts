@@ -306,8 +306,43 @@ export class Dat extends Date {
     return Dat.isSame(this, compareTo);
   }
 
+  /**
+   * Checks if this date's year is a leap year.
+   * @returns {boolean} True if the year is a leap year, false otherwise.
+   * @example
+   * const date = new Dat("2024-01-01");
+   * console.log(date.isLeapYear()); // true
+   * const date2 = new Dat("2023-01-01");
+   * console.log(date2.isLeapYear()); // false
+   */
   isLeapYear(): boolean {
     return Dat.isLeapYear(this);
+  }
+
+  /**
+   * Checks if this date is a working day (Monday to Friday).
+   * @returns {boolean} True if the date is a working day, false otherwise.
+   * @example
+   * const weekday = new Dat("2024-01-15"); // Monday
+   * console.log(weekday.isWorkingDay()); // true
+   * const weekend = new Dat("2024-01-13"); // Saturday
+   * console.log(weekend.isWorkingDay()); // false
+   */
+  isWorkingDay(): boolean {
+    return Dat.isWorkingDay(this);
+  }
+
+  /**
+   * Checks if this date is a weekend (Saturday or Sunday).
+   * @returns {boolean} True if the date is a weekend, false otherwise.
+   * @example
+   * const weekend = new Dat("2024-01-13"); // Saturday
+   * console.log(weekend.isWeekend()); // true
+   * const weekday = new Dat("2024-01-15"); // Monday
+   * console.log(weekday.isWeekend()); // false
+   */
+  isWeekend(): boolean {
+    return Dat.isWeekend(this);
   }
 
   /**
@@ -576,9 +611,49 @@ export class Dat extends Date {
     return firstDate.getTime() === secondDate.getTime();
   }
 
+  /**
+   * Checks if the given year is a leap year.
+   * @param {Date} date - The date to check.
+   * @returns {boolean} True if the year is a leap year, false otherwise.
+   * @example
+   * const date = new Date('2024-01-01');
+   * console.log(Dat.isLeapYear(date)); // true
+   * const date2 = new Date('2023-01-01');
+   * console.log(Dat.isLeapYear(date2)); // false
+   */
   static isLeapYear(date: Date): boolean {
     const year = date.getFullYear();
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  }
+  
+  /**
+   * Checks if the given date is a working day (Monday to Friday).
+   * @param {Date} date - The date to check.
+   * @returns {boolean} True if the date is a working day, false otherwise.
+   * @example
+   * const monday = new Date('2023-01-02'); // Monday
+   * console.log(Dat.isWorkingDay(monday)); // true
+   * const saturday = new Date('2023-01-07'); // Saturday
+   * console.log(Dat.isWorkingDay(saturday)); // false
+   */
+  static isWorkingDay(date: Date): boolean {
+    const day = date.getDay();
+    return day !== 0 && day !== 6;
+  }
+
+  /**
+   * Checks if the given date is a weekend (Saturday or Sunday).
+   * @param {Date} date - The date to check.
+   * @returns {boolean} True if the date is a weekend, false otherwise.
+   * @example
+   * const saturday = new Date('2023-01-07'); // Saturday
+   * console.log(Dat.isWeekend(saturday)); // true
+   * const monday = new Date('2023-01-02'); // Monday
+   * console.log(Dat.isWeekend(monday)); // false
+   */
+  static isWeekend(date: Date): boolean {
+    const day = date.getDay();
+    return day === 0 || day === 6;
   }
 
   /**
