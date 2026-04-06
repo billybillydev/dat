@@ -425,25 +425,6 @@ export class Dat extends Date {
   }
 
   /**
-   * Formats this date as a relative duration using Intl.RelativeTimeFormat.
-   * @param {DurationUnit} unit - The unit of time for the duration.
-   * @param {Intl.RelativeTimeFormatOptions & { locale?: Locale }} [options] - Options for Intl.RelativeTimeFormat and locale.
-   * @returns {string} - The formatted duration string.
-   * @example
-   * const date = new Dat();
-   * console.log(date.formatDuration("day"));
-   */
-  formatDuration(
-    value: number,
-    unit: DurationUnit,
-    options: Intl.RelativeTimeFormatOptions & { locale?: Locale } = {
-      locale: "en-US",
-    },
-  ): string {
-    return Dat.formatDuration(value, unit, options);
-  }
-
-  /**
    * Calculates the duration from now to a future date in the specified unit.
    * @param {Date} futureDate - The future date to compare against the current date.
    * @param {DurationUnit} unit - The unit of time to return the duration in.
