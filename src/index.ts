@@ -19,13 +19,13 @@ export type DatParametersObject = {
   milliseconds?: number;
 };
 
-function isDatParametersObject(param: unknown): param is DatParametersObject {
+export function isDatParametersObject(param: unknown): param is DatParametersObject {
   return (
     typeof param === "object" && param !== null && !(param instanceof Date)
   );
 }
 
-type DateConstructorArgs =
+export type DateConstructorArgs =
   | []
   | [value: string | number | Date]
   | [
